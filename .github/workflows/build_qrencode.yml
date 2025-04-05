@@ -1,0 +1,57 @@
+name: Build qrencode for MiSTer
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  build_qrencode:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install apt-get utilities
+      run: >
+        sudo apt update &&
+        sudo apt-get install -y -qq
+        autoconf
+        automake
+        autotools-dev
+        binfmt-support
+        build-essential
+        curl
+        gcc
+        git
+        libtool
+        make
+        pkg-config
+        qemu-user
+        qemu-user-static
+        sharutils
+        u-boot-tools
+
+    - name: Build qrencode
+      env:
+        QRENCODE_VERSION: 4.1.1
+        GCC_VERSION: 10.2-2020.11
+      run: >
+        .github/build-mister-qrencode.sh
+
+    - name: Commit and push changes
+      uses: devops-infra/action-commit-push@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: Updated Scripts directory
+
+    - name: Build Custom Database for MiSTer Downloader
+      run: >
+        sudo chown -R runner .git ;
+        set -o pipefail
+        && curl --fail --location https://raw.githubusercontent.com/theypsilon/Downloader_DB-Template_MiSTer/main/.github/build_db.py
+        | python3 -
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

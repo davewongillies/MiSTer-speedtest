@@ -9,7 +9,7 @@ ST_DL=https://install.speedtest.net/app/cli/ookla-speedtest-${ST_VERSION}-linux-
 ST_DL_TMP_DIR=/tmp
 ST_DL_TMP=${ST_DL_TMP_DIR}/speedtest.tgz
 
-ST_ARGS="--selection-details"
+ST_ARGS="--progress=yes"
 
 [ -f ${SCRIPTS_PATH}/speedtest.ini ] && source ${SCRIPTS_PATH}/speedtest.ini
 
@@ -28,4 +28,9 @@ if ! [ -f ${INSTALL_PATH}/speedtest ] || [ "${ST_VERSION}" != "$(< ${ST_VER_FILE
   echo "${ST_VERSION}" > ${ST_VER_FILE}
 fi
 
-printf "YES\n" | ${INSTALL_PATH}/speedtest "${ST_ARGS}"
+printf "YES\n" | ${INSTALL_PATH}/speedtest ${ST_ARGS} | tee ${ST_DL_TMP_DIR}/speedtest.out
+
+echo "  Result URL QR Code:"
+${INSTALL_PATH}/qrencode $(grep -oE "https://www.speedtest.net/result/c/.*" ${ST_DL_TMP_DIR}/speedtest.out) -t ansiutf8
+
+rm -f ${ST_DL_TMP_DIR}/speedtest.out

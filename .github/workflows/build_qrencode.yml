@@ -1,4 +1,4 @@
-name: Build qrencode for MiSTer
+name: Build MiSTer-speedtest
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 permissions: write-all
 
 jobs:
-  build_qrencode:
+  MiSTer-speedtest:
     runs-on: ubuntu-latest
 
     steps:

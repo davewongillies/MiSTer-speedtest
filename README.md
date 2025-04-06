@@ -1,5 +1,7 @@
 # MiSTer-speedtest
 
+[![Build MiSTer-speedtest](https://github.com/davewongillies/MiSTer-speedtest/actions/workflows/build_qrencode.yml/badge.svg)](https://github.com/davewongillies/MiSTer-speedtest/actions/workflows/build_qrencode.yml)
+
 ## What?
 
 A simple script to install and run the [Ookla Speedtest CLI](https://www.speedtest.net/apps/cli)
